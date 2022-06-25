@@ -1,28 +1,41 @@
 package com.software.helpdeskfull.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.software.helpdeskfull.domain.enums.Perfil;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class Pessoa {
+@Entity //Notação para criar tabela no banco
+public abstract class Pessoa implements Serializable {
+    private static final long serialVersionUID=1L;
+
     /*Os Atributos não podem ser do tipo private porque se for apenas essa classe vai
      acessar então deixamos ele como protecd pois ai as classes herdadas vão reconhecer
       isso é o conceito de herança
       */
 
+    @Id //chave primaria no banco
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //gerar valor de forma automatica
     protected Integer id;
     protected String  nome;
+    @Column(unique = true)//para não ter cpf duplicado
     protected String  cpf;
+    @Column(unique = true)//para não ter cpf duplicado
     protected String  email;
     protected String  senha;
 
     /*Criado uma lista de perfil do enums e já iniciado
      com o HashSet para evitar erro de ponteiro null*/
+    @ElementCollection(fetch = FetchType.EAGER) /*Para asegurar que a lista de elelemntos venha
+    com os nomes alem do código*/
+    @CollectionTable(name = "PERFIS")//Cria a tabela perfis
     protected Set<Integer> perfis = new HashSet<>();
-
+    @JsonFormat(pattern = "dd/MM/yyyy")//definir formato da data
     protected LocalDate dataCriacao =  LocalDate.now(); //Recebe um localDate que é a data local do momento de
 
     public Pessoa(){

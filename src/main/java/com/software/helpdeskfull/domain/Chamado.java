@@ -1,21 +1,36 @@
 package com.software.helpdeskfull.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.software.helpdeskfull.domain.enums.Prioridade;
 import com.software.helpdeskfull.domain.enums.Status;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Chamado {
+@Entity
+public class Chamado  implements Serializable {
+    private static final long serialVersionUID=1L;
+
+    @Id //chave primaria no banco
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //gerar valor de forma automatica
     private  Integer id;
+    @JsonFormat(pattern = "dd/MM/yyyy")//definir formato da data
     private LocalDate dataAbertura = LocalDate.now();
+    @JsonFormat(pattern = "dd/MM/yyyy")//definir formato da data
     private LocalDate dataFechamento = LocalDate.now();
     private Prioridade prioridade;
     private Status status;
     private String titulo;
     private String observacoes;
 
+    /*Muitos chamados para apenas um técnico*/
+    @ManyToOne
+    @JoinColumn(name="tecnico_id")
     private Tecnico tecnico;
+    @ManyToOne
+    @JoinColumn(name="cliente_id")
     private Cliente cliente;
 
     public Chamado(){
