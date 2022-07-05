@@ -2,6 +2,7 @@ package com.software.helpdeskfull.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.software.helpdeskfull.domain.enums.Perfil;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +24,8 @@ public abstract class Pessoa implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //gerar valor de forma automatica
     protected Integer id;
     protected String  nome;
+
+    @CPF//Validação que faz a verificação do CPF
     @Column(unique = true)//para não ter cpf duplicado
     protected String  cpf;
     @Column(unique = true)//para não ter cpf duplicado
