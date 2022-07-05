@@ -48,6 +48,16 @@ public class TecnicoService {
 
     }
 
+    public void delete(Integer id) {
+        Tecnico obj = findById(id);
+        if (obj.getChamados().size()>0){//exceção de violação de integridade dos dados
+            throw new DataIntegrityViolationException("Técnico possui ordens de serviço não pode ser deletado!");
+        }
+            repository.deleteById(id);
+
+    }
+
+
     private void validaPorCpfEmail(TecnicoDTO objDTO) {
         Optional<Pessoa> obj = pessoaRepository.findByCpf(objDTO.getCpf());
             if(obj.isPresent() && obj.get().getId() != objDTO.getId()){
@@ -61,6 +71,7 @@ public class TecnicoService {
         }
 
         }
+
 
 
 }

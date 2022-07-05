@@ -53,4 +53,13 @@ public class TecnicoResource {
         Tecnico obj =service.update(id,objDto);
         return  ResponseEntity.ok().body(new TecnicoDTO(obj));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public  ResponseEntity<TecnicoDTO> delete(@PathVariable Integer id){//como estou recebendo uma variavel de path tenho que declarar aui
+        service.delete(id);
+        return  ResponseEntity.noContent().build();
+
+
+    }
+
 }
